@@ -1,3 +1,9 @@
+if ("shiny" %in% row.names(installed.packages())  == FALSE) 
+  {install.packages("shiny")}
+if ("zoo" %in% row.names(installed.packages())  == FALSE) 
+{install.packages("zoo")}
+if ("lattice" %in% row.names(installed.packages())  == FALSE) 
+{install.packages("lattice")}
 library(shiny)
 library(zoo)
 library(lattice)
