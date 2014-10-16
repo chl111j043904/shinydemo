@@ -40,7 +40,7 @@ shinyServer(function(input, output) {
     if(control$autostart){
     data<-subset(ccardata(),Group %in% c("Historical",input$scen))
     data<-data[order(data$order,data$Date),]
-    xyplot(Unemploymentrate~Date,groups=Group,data=data,lwd=3,col=C("aquamarine3","cadetblue3"),
+    xyplot(Unemploymentrate~Date,groups=Group,data=data,lwd=3,col=c("aquamarine3","cadetblue3"),
            type="l",auto.key=list(points=F,lines=T,columns=2),
            panel=function(...){panel.xyplot(...);panel.grid()})
                          }
