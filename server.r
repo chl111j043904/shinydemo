@@ -27,7 +27,7 @@ shinyServer(function(input, output) {
     isolate({
     if(control$autostart){
       data<-subset(ccardata(),Group %in% c(input$scen,"Historical"))
-    xyplot(NominalGDPgrowth~Date,groups=Group,data=data,
+    xyplot(NominalGDPgrowth~Date,groups=Group,data=data,ylim=range(ccardata()["NominalGDPgrowth"]),
            type="o",auto.key=list(points=F,lines=T,columns=2),
            panel=function(...){panel.xyplot(...);panel.grid()})
                         }
@@ -40,7 +40,7 @@ shinyServer(function(input, output) {
     if(control$autostart){
     data<-subset(ccardata(),Group %in% c("Historical",input$scen))
     data<-data[order(data$order,data$Date),]
-    xyplot(Unemploymentrate~Date,groups=Group,data=data,
+    xyplot(Unemploymentrate~Date,groups=Group,data=data,ylim=range(ccardata()["Unemploymentrate"]),
            type="o",auto.key=list(points=F,lines=T,columns=2),
            panel=function(...){panel.xyplot(...);panel.grid()})
                          }
