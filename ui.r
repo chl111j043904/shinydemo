@@ -1,26 +1,31 @@
 library(shiny)
-shinyUI(bootstrapPage(
+library(zoo)
+library(lattice)
+
+# Define UI for dataset viewer application
+shinyUI(fluidPage(
   
-  selectInput(inputId = "n_breaks",
-              label = "Number of bins in histogram (approximate):",
-              choices = c(10, 20, 35, 50),
-              selected = 20),
+  # Application title.
+  titlePanel("Stress Testing"),
   
-  checkboxInput(inputId = "individual_obs",
-                label = strong("Show individual observations"),
-                value = FALSE),
-  
-  checkboxInput(inputId = "density",
-                label = strong("Show density estimate"),
-                value = FALSE),
-  
-  plotOutput(outputId = "main_plot", height = "300px"),
-  
-  # Display this only if the density is shown
-  conditionalPanel(condition = "input.density == true",
-                   sliderInput(inputId = "bw_adjust",
-                               label = "Bandwidth adjustment:",
-                               min = 0.2, max = 2, value = 1, step = 0.2)
-  )
-  
-))
+  selectInput(inputId="scen", 
+              label="CCAR 2014 Scenario", 
+              choices=c("Baseline","Adverse","Severely Adverse"), selected = "Baseline"),
+    
+      actionButton("run","Load Scenario"),
+
+    
+    # Show a summary of the dataset and an HTML table with the
+    # requested number of observations. Note the use of the h4
+    # function to provide an additional header above each output
+    # section.
+
+    h4("Summary"),
+    plotOutput("ccarplot1",width=800,height=600),
+  plotOutput("ccarplot2",width=800,height=600)
+    #verbatimTextOutput("summary"),
+      
+    #h4("Observations"),
+    #tableOutput("view")
+
+  )    )
