@@ -1,22 +1,50 @@
+
+# Define server logic required to summarize and view the 
+# selected dataset
 shinyServer(function(input, output) {
   
-  output$main_plot <- renderPlot({
-    
-    hist(faithful$eruptions,
-         probability = TRUE,
-         breaks = as.numeric(input$n_breaks),
-         xlab = "Duration (minutes)",
-         main = "Geyser eruption duration")
-    
-    if (input$individual_obs) {
-      rug(faithful$eruptions)
-    }
-    
-    if (input$density) {
-      dens <- density(faithful$eruptions,
-                      adjust = input$bw_adjust)
-      lines(dens, col = "blue")
-    }
-    
+  control<-reactiveValues(autostart=F)
+  
+  observe({
+    if(input$run==0){return()}
+    isolate({
+      control$autostart<-T
+    })
   })
+  
+  ccardata<-reactive({
+    data<-read.csv("/Users/mrperfect37/Desktop/RBS Citizens Work/ccardata.csv",stringsAsFactors=F)
+    names(data)<-gsub("[.]","",names(data))  
+    data$Date<-as.yearmon(data$Date)
+    data$Group[data$Group==""]<-"Severely Adverse"
+    data$order<-factor(data$Group)
+    levels(data$order)<-c("Historical","Baseline","Adverse","Severely Adverse")
+    return(data)
+    })
+  
+  output$ccarplot1<-renderPlot({
+    input$run
+    isolate({
+    if(control$autostart){
+      data<-subset(ccardata(),Group %in% c(input$scen,"Historical"))
+    xyplot(NominalGDPgrowth~Date,groups=Group,data=data,lwd=5,
+           type="l",auto.key=list(points=F,lines=T,columns=2),
+           panel=function(...){panel.xyplot(...);panel.grid()})
+                        }
+            })
+  })
+  
+  output$ccarplot2<-renderPlot({
+    input$run
+    isolate({
+    if(control$autostart){
+    data<-subset(ccardata(),Group %in% c("Historical",input$scen))
+    data<-data[order(data$order,data$Date),]
+    xyplot(Unemploymentrate~Date,groups=Group,data=data,lwd=5,
+           type="l",auto.key=list(points=F,lines=T,columns=2),
+           panel=function(...){panel.xyplot(...);panel.grid()})
+                         }
+           })   
+  })
+
 })
