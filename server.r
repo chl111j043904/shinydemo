@@ -28,7 +28,7 @@ shinyServer(function(input, output) {
     if(control$autostart){
       data<-subset(ccardata(),Group %in% c(input$scen,"Historical"))
     xyplot(NominalGDPgrowth~Date,groups=Group,data=data,lwd=3,col=c("aquamarine3","cornflowerblue"),
-           type="o",auto.key=list(points=F,lines=list("aquamarine3","cornflowerblue"),columns=2),
+           type="o",auto.key=list(points=F,lines=list(col=c("aquamarine3","cornflowerblue")),columns=2),
            panel=function(...){panel.xyplot(...);panel.grid()})
                         }
             })
@@ -41,7 +41,7 @@ shinyServer(function(input, output) {
     data<-subset(ccardata(),Group %in% c("Historical",input$scen))
     data<-data[order(data$order,data$Date),]
     xyplot(Unemploymentrate~Date,groups=Group,data=data,lwd=3,col=c("aquamarine3","cornflowerblue"),
-           type="o",auto.key=list(points=F,lines=list("aquamarine3","cornflowerblue"),columns=2),
+           type="o",auto.key=list(points=F,lines=list(col=c("aquamarine3","cornflowerblue")),columns=2),
            panel=function(...){panel.xyplot(...);panel.grid()})
                          }
            })   
