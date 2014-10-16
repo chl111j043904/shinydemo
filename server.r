@@ -13,7 +13,7 @@ shinyServer(function(input, output) {
   })
   
   ccardata<-reactive({
-    data<-read.csv("/Users/mrperfect37/Desktop/RBS Citizens Work/ccardata.csv",stringsAsFactors=F)
+    data<-read.csv("ccardata.csv",stringsAsFactors=F)
     names(data)<-gsub("[.]","",names(data))  
     data$Date<-as.yearmon(data$Date)
     data$Group[data$Group==""]<-"Severely Adverse"
